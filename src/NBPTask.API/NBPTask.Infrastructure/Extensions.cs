@@ -1,8 +1,10 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NBPTask.Domain.Clients.NBP;
 using NBPTask.Infrastructure.Clients;
+using NBPTask.Shared.Exceptions;
 
 namespace NBPTask.Infrastructure;
 
@@ -17,6 +19,7 @@ public static class Extensions
                          ?? throw new InvalidOperationException("No NBP API url defined in configuration");
             client.BaseAddress = new Uri(apiUrl);
         });
+        services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         return services;
     }
