@@ -11,4 +11,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\NBPTask.Application\NBPTask.Application.csproj" />
+      <ProjectReference Include="..\NBPTask.Infrastructure\NBPTask.Infrastructure.csproj" />
+      <ProjectReference Include="..\NBPTask.Shared\NBPTask.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

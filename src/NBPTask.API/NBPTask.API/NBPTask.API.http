@@ -1,6 +1,6 @@
-@NBPTask.API_HostAddress = http://localhost:5062
+@url = http://localhost:5062
 
-GET {{NBPTask.API_HostAddress}}/weatherforecast/
+GET {{url}}/nbp/exchangeRates/
 Accept: application/json
 
 ###

@@ -1,13 +1,19 @@
+using Microsoft.AspNetCore.Mvc;
+using NBPTask.Application;
+using NBPTask.Application.Queries;
+using NBPTask.Infrastructure;
+using NBPTask.Shared.Queries;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseInfrastructure();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -16,29 +22,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("nbp/exchangeRates", async ([FromServices]IQueryDispatcher dispatcher, string tableType, int topCount) => 
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+    var exchangeRates = await dispatcher.QueryAsync(new GetExchangeRatesQuery(tableType, topCount));
+    return exchangeRates.Count == 0 ? Results.NotFound() : Results.Ok(exchangeRates);
+})
+.WithName("GetExchangeRates")
+.WithOpenApi();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
