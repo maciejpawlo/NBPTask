@@ -1,10 +1,18 @@
 using System.Globalization;
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NBPTask.Application.Services;
 using NBPTask.Domain.Clients.NBP;
+using NBPTask.Domain.Repositories;
+using NBPTask.Infrastructure.Auth;
 using NBPTask.Infrastructure.Clients;
+using NBPTask.Infrastructure.Repositories;
 using NBPTask.Shared.Exceptions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using NBPTask.Shared;
 
 namespace NBPTask.Infrastructure;
 
@@ -12,20 +20,39 @@ public static class Extensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddHttpClient<INbpApiClient, NbpApiClient>((serviceProvider, client) =>
+        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        services.AddHttpClient<INbpApiClient, NbpApiClient>(client =>
         {
-            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            var apiUrl = configuration.GetValue<string>("Nbp:ApiUrl") 
-                         ?? throw new InvalidOperationException("No NBP API url defined in configuration");
+            var apiUrl = configuration["Nbp:ApiUrl"]!;
             client.BaseAddress = new Uri(apiUrl);
         });
-        services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IJwtManager, JwtManager>();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!))
+                };
+            });
+        services.AddAuthorization();
+        services.AddQueries();
         return services;
     }
 
     public static void UseInfrastructure(this IApplicationBuilder app)
     {
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.UseExceptionHandler();
     }
 }

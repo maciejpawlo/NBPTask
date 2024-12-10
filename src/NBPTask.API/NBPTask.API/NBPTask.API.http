@@ -1,6 +1,18 @@
 @url = http://localhost:5062
+# @name sign_in
+POST {{url}}/user/sign-in/
+Content-Type: application/json
 
-GET {{url}}/nbp/exchangeRates/
-Accept: application/json
+{
+  "username": "admin",
+  "password": "password"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###
+# @name exchangeRates
+GET {{url}}/nbp/exchangeRates/?tableType=A&topCount=5
+Authorization: Bearer {{auth_token}}
 
 ###

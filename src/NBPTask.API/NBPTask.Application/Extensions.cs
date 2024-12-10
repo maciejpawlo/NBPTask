@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using NBPTask.Shared;
+using NBPTask.Application.Services;
 
 namespace NBPTask.Application;
 
@@ -7,7 +7,7 @@ public static class Extensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddQueries();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
         return services;
     }
 }

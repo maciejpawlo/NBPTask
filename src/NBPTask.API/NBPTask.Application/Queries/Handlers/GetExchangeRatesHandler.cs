@@ -4,12 +4,12 @@ using NBPTask.Shared.Queries;
 
 namespace NBPTask.Application.Queries.Handlers;
 
-public class GetExchangeRatesQueryHandler(INbpApiClient nbpApiClient)
-    : IQueryHandler<GetExchangeRatesQuery, IReadOnlyCollection<ExchangeRateDto>>
+public class GetExchangeRatesHandler(INbpApiClient nbpApiClient)
+    : IQueryHandler<GetExchangeRates, IReadOnlyCollection<ExchangeRateDto>>
 {
     private readonly INbpApiClient _nbpApiClient = nbpApiClient;
 
-    public async Task<IReadOnlyCollection<ExchangeRateDto>> HandleAsync(GetExchangeRatesQuery query)
+    public async Task<IReadOnlyCollection<ExchangeRateDto>> HandleAsync(GetExchangeRates query, CancellationToken cancellationToken)
     {
         var result = await _nbpApiClient.GetLatestExchangeRates(query.TableType, query.TopCount);
         return result
