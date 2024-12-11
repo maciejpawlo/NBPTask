@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseInfrastructure();
 
-app.MapGet("nbp/exchangeRates", async ([FromServices] IQueryDispatcher dispatcher, string tableType, int topCount) =>
+app.MapGet("nbp/exchange-rates", async ([FromServices] IQueryDispatcher dispatcher, string tableType, int topCount) =>
     {
         var exchangeRates = await dispatcher.QueryAsync(new GetExchangeRates(tableType, topCount));
         return exchangeRates.Count == 0 ? Results.NotFound() : Results.Ok(exchangeRates);
