@@ -1,0 +1,20 @@
+<mat-card class="flex-1 p-2" appearance="outlined">
+  <mat-card-header>
+    <h4>Zaloguj się</h4>
+  </mat-card-header>
+  <mat-card-content>
+    <form novalidate [formGroup]="loginForm" class="flex flex-col" >
+      <mat-form-field>
+        <mat-label>Login</mat-label>
+        <input matInput formControlName="username" placeholder="Login" value="">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Hasło</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Hasło" value="">
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <app-button title="Zaloguj" (onClick)="handleOnSubmit()"/>
+  </mat-card-actions>
+</mat-card>
