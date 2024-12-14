@@ -46,11 +46,17 @@ public static class Extensions
             });
         services.AddAuthorization();
         services.AddQueries();
+        services.AddCors(p => p.AddPolicy("mycors", builder =>
+        {
+            builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+        }));
+
         return services;
     }
 
     public static void UseInfrastructure(this IApplicationBuilder app)
     {
+        app.UseCors("mycors");
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseExceptionHandler();

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NBPTask.Application;
 using NBPTask.Application.Commands;
@@ -26,8 +27,8 @@ app.UseInfrastructure();
 
 app.MapGet("nbp/exchange-rates", async ([FromServices] IQueryDispatcher dispatcher, string tableType, int topCount) =>
     {
-        var exchangeRates = await dispatcher.QueryAsync(new GetExchangeRates(tableType, topCount));
-        return exchangeRates.Count == 0 ? Results.NotFound() : Results.Ok(exchangeRates);
+        var exchangeRatesResult = await dispatcher.QueryAsync(new GetExchangeRates(tableType, topCount));
+        return exchangeRatesResult.ToApiResult();
     })
     .WithName("GetExchangeRates")
     .WithOpenApi()
@@ -37,7 +38,7 @@ app.MapGet("nbp/exchange-rates", async ([FromServices] IQueryDispatcher dispatch
 app.MapPost("user/sign-in", ([FromServices] IAuthenticationService authenticationService, SignIn signIn) =>
     {
         var result = authenticationService.SignIn(signIn.Username, signIn.Password);
-        return result.IsSuccess ? Results.Ok(result.Value) : Results.Unauthorized();
+        return result.ToApiResult();
     })
     .WithName("SignIn")
     .WithOpenApi();

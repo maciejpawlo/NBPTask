@@ -1,4 +1,4 @@
-@url = http://localhost:5062
+@url = https://localhost:7160
 # @name sign_in
 POST {{url}}/user/sign-in/
 Content-Type: application/json
@@ -11,7 +11,7 @@ Content-Type: application/json
 > {% client.global.set("auth_token", response.body.token); %}
 
 ###
-# @name exchangeRates
+# @name exchange_rates
 GET {{url}}/nbp/exchange-rates/?tableType=A&topCount=5
 Authorization: Bearer {{auth_token}}
 
