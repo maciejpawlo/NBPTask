@@ -12,9 +12,10 @@ export class ButtonComponent {
 
   title = input.required<string>();
   color = input<"default" | "primary" | "accent" | "warn">("default");
-  onClick = output<void>();
+  click = output<MouseEvent>();
+  type = input<"button" | "submit">("button");
 
-  handleOnClick(): void {
-    this.onClick.emit();
+  handleOnClick($event: MouseEvent): void {
+    this.click.emit($event);
   }
 }

@@ -1,1 +1,7 @@
-<p>toolbar works!</p>
+<mat-toolbar>
+  <span>{{title()}}</span>
+  @if (isLoggedIn()) {
+    <span class="flex-auto"></span>
+    <app-button title="Wyloguj" (click)="handleLogoutClicked()"></app-button>
+  }
+</mat-toolbar>

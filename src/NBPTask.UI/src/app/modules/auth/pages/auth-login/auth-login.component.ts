@@ -23,12 +23,15 @@ export class AuthLoginComponent {
     password: ['', Validators.required]
   });
 
-  handleOnSubmit(): void {
+  handleOnSubmit(event: MouseEvent): void {
     if(this.loginForm.valid) {
+      //NOTE: prohibint double api call, since button is connected to form submission
+      //it may happen that the event can be fired twice
+      //event.preventDefault();
       this.authService.signIn(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe({
           next: () => this.router.navigate(['']),
-          error: () => console.log('TODO: show error message')
+          error: () => {}
         });
     }
   }

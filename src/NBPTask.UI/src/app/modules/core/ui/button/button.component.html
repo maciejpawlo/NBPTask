@@ -1,1 +1,1 @@
-<button mat-button [color]="color()" (click)="handleOnClick()">{{title().toUpperCase()}}</button>
+<button mat-flat-button [type]="type()" [color]="color()" (click)="handleOnClick($event)">{{title().toUpperCase()}}</button>

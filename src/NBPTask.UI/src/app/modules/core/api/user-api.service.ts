@@ -10,7 +10,7 @@ import { AuthenticationDto } from './responses/authentication-dto';
 export class UserApiService {
 
   private http: HttpClient = inject(HttpClient);
-  private apiUrl: string = "htpp://localhost:5062/user"
+  private apiUrl: string = "https://localhost:7160/user"
 
   signIn(request: SignIn): Observable<AuthenticationDto> {
     return this.http.post<AuthenticationDto>(`${this.apiUrl}/sign-in`, request);

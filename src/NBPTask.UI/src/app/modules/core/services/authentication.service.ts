@@ -28,9 +28,8 @@ export class AuthenticationService {
         }));
   }
 
-  logout(callback: () => void): void {
+  logout(): void {
     this.tokenService.removeToken();
-    callback();
   }
 
   isLoggedIn(): boolean {

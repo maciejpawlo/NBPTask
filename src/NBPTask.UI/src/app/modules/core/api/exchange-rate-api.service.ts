@@ -10,12 +10,12 @@ import { GetExchangeRatesQuery } from './requests/get-exchange-rates-query';
 export class ExchangeRateApiService {
 
   private http: HttpClient = inject(HttpClient);
-  private apiUrl: string = "htpp://localhost:5062/nbp"
+  private apiUrl: string = "https://localhost:7160/nbp"
 
   getExchangeRates(request: GetExchangeRatesQuery): Observable<ExchangeRateDto[]> {
     const params: HttpParams = new HttpParams()
       .set('tableType', request.tableType)
       .set('topCount', request.topCount);
-    return this.http.get<ExchangeRateDto[]>(`${this.apiUrl}/sign-in`, { params: params });
+    return this.http.get<ExchangeRateDto[]>(`${this.apiUrl}/exchange-rates`, { params: params });
   }
 }

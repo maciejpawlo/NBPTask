@@ -8,19 +8,19 @@ const TOKEN_KEY = 'access-token';
 })
 export class TokenService {
 
-  saveToken(token: string) : void {
+  saveToken(token: string): void {
     window.localStorage.removeItem(TOKEN_KEY);
     window.localStorage.setItem(TOKEN_KEY, token);
   }
 
-  removeToken() : void {
-    window.localStorage.clear();
+  removeToken(): void {
+    window.localStorage.removeItem(TOKEN_KEY);
   }
 
-  isTokenExpired() : boolean {
+  isTokenExpired(): boolean {
     const token = window.localStorage.getItem(TOKEN_KEY);
     if(!token){
-      return false;
+      return true;
     }
     const decodedToken: JwtPayload = jwtDecode(token);
     const expirationDate = new Date(decodedToken.exp! * 1000);

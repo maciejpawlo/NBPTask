@@ -5,7 +5,7 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'exchange-rate',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'exchange-rate',
