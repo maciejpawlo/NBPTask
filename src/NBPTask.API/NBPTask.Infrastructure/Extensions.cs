@@ -20,6 +20,8 @@ public static class Extensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         services.AddHttpClient<INbpApiClient, NbpApiClient>(client =>
         {
@@ -46,6 +48,8 @@ public static class Extensions
             });
         services.AddAuthorization();
         services.AddQueries();
+        //NOTE: for prod scenario we would configure cors correctly to allow request 
+        //only from known origins
         services.AddCors(p => p.AddPolicy("mycors", builder =>
         {
             builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
@@ -56,6 +60,9 @@ public static class Extensions
 
     public static void UseInfrastructure(this IApplicationBuilder app)
     {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        app.UseHttpsRedirection();
         app.UseCors("mycors");
         app.UseAuthentication();
         app.UseAuthorization();
