@@ -1,0 +1,25 @@
+services:
+  frontend:
+    image: nbptask.ui
+    container_name: nbptask.ui
+    ports:
+      - "4200:80"
+    build:
+      context: ../src/NBPTask.UI/
+      dockerfile: Dockerfile
+    networks:
+      - frontend
+
+  backend:
+    image: nbptask.api
+    container_name: nbptask.api
+    ports:
+      - "8080:8080"
+    build:
+      context: ../src/NBPTask.API/
+      dockerfile: ./NBPTask.API/Dockerfile
+    networks:
+      - frontend
+  
+networks:
+  frontend:

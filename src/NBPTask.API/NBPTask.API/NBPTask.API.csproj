@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +15,12 @@
       <ProjectReference Include="..\NBPTask.Application\NBPTask.Application.csproj" />
       <ProjectReference Include="..\NBPTask.Infrastructure\NBPTask.Infrastructure.csproj" />
       <ProjectReference Include="..\NBPTask.Shared\NBPTask.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

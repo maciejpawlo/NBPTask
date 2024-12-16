@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ExchangeRateDto } from './responses/exchange-rate-dto';
 import { GetExchangeRatesQuery } from './requests/get-exchange-rates-query';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { GetExchangeRatesQuery } from './requests/get-exchange-rates-query';
 export class ExchangeRateApiService {
 
   private http: HttpClient = inject(HttpClient);
-  private apiUrl: string = "https://localhost:7160/nbp"
+  private apiUrl: string = `${environment.apiUrl}/nbp`;
 
   getExchangeRates(request: GetExchangeRatesQuery): Observable<ExchangeRateDto[]> {
     const params: HttpParams = new HttpParams()

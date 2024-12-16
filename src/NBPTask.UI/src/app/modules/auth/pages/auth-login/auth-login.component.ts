@@ -25,9 +25,9 @@ export class AuthLoginComponent {
 
   handleOnSubmit(event: MouseEvent): void {
     if(this.loginForm.valid) {
-      //NOTE: prohibint double api call, since button is connected to form submission
+      //NOTE: prohibit double api call, since button is connected to form submission
       //it may happen that the event can be fired twice
-      //event.preventDefault();
+      event.preventDefault();
       this.authService.signIn(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe({
           next: () => this.router.navigate(['']),
